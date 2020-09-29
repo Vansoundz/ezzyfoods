@@ -1,0 +1,262 @@
+@import url("https://fonts.googleapis.com/css?family=Gupter&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+html,
+body {
+  min-height: 100vh;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.app {
+  width: 50%;
+  min-height: 100vh;
+  /* background: #fff; */
+  margin: 0 auto 3em;
+  position: relative;
+  background: azure;
+  /* background-position: fixed; */
+  background-size: contain;
+}
+body {
+  /* background: url('https://images.unsplash.com/photo-1569419927926-8d097e621683?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9'); */
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-x: 0;
+}
+
+.appbar {
+  position: sticky !important;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+nav ul li:not(:last-child) {
+  padding-right: 10px;
+}
+nav ul a {
+  padding: 0 !important;
+}
+
+.bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  height: 3em;
+  z-index: 100;
+}
+
+.bottom a {
+  color: grey !important;
+}
+
+.bottom a.active {
+  color: white !important;
+}
+
+span.badge {
+  box-sizing: border-box;
+  position: absolute;
+  top: 9px;
+  border-radius: 50%;
+  width: 22px;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 767px) and (min-width: 426px) {
+  .app {
+    width: 80% !important;
+  }
+
+  .bottom {
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .app {
+    width: 100% !important;
+  }
+
+  .bottom {
+    width: 100% !important;
+  }
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
+/* MISC
+.row{
+  margin: 8px !important
+} */
+
+/* 
+Product Styles
+ */
+.img,
+img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.pcard {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 8px;
+  align-items: center;
+}
+
+.pinfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 50%;
+}
+
+.plist {
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  margin-top: 1em;
+}
+
+/* Order */
+
+.order {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 0.9fr 2fr 1fr 1fr 1fr 1fr;
+}
+
+/* Sidenav */
+
+.sidenav {
+  display: grid;
+  align-items: center;
+}
+
+.sidenav li a.active {
+  background: #ffa50087;
+}
+
+/* Form */
+.mform {
+  width: 70%;
+  margin: 20px auto;
+}
+
+.corder {
+  margin-top: 50px;
+}
+
+.toast {
+  margin: 0 auto !important;
+  top: 10px;
+  width: 200px;
+  /* position: absolute */
+  text-align: center;
+}
+
+/* Form */
+form {
+  margin: 1.5rem;
+}
+
+.br {
+  position: fixed;
+  bottom: 4rem;
+  left: 1rem;
+  z-index: 100;
+}
+
+.alert {
+  padding: 20px;
+  position: sticky;
+  top: 5em;
+  margin: 0 auto;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* Tabs */
+.tabs .tab a {
+  color: black;
+}
+
+.tabs .tab a:hover,
+.tabs .tab a.active {
+  color: rgb(255, 166, 0);
+  background-color: rgba(253, 164, 0, 0.144);
+}
+
+.tabs .indicator {
+  background-color: orange;
+}
+
+li.collection-item.order-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Collapsible */
+.collapsible-header {
+  justify-content: space-between;
+}
+
+/* Preloader */
+
+.preloader-wrapper {
+  margin: 2em auto;
+  display: flex;
+}
+
+.preloader-wrapper.big {
+  width: 8em;
+  height: 8em;
+}
+
+/* Dash */
+/* .more{
+  position: fixed;
+  right: 1rem;
+  top: 4rem;
+} */
+
+.more {
+  position: sticky !important;
+  top: 5em !important;
+  float: right !important;
+  z-index: 100;
+}
+
+.dropdown-content {
+  margin-top: 4em;
+  background: #ff9800;
+  top: 0 !important;
+}
+
+.dropdown-content li a {
+  color: azure;
+}
+
+/* row */
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-content li > a,
+.dropdown-content li > span {
+  color: #fff;
+}

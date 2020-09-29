@@ -1,0 +1,11 @@
+node_modules
+
+# Build
+build
+
+# environment
+.env
+
+
+# misc
+*.error
