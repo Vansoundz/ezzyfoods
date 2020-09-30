@@ -4,7 +4,6 @@ import BottomNav from "./components/layout/BottomNav";
 import Routes from "./Routes/Routes";
 import { BrowserRouter, Link } from "react-router-dom";
 import "./style.css";
-import "materialize-css/dist/js/materialize.min.js";
 import { loadProducts } from "./store/actions/product";
 import { useDispatch } from "react-redux";
 import { clearOrder } from "./store/actions/product";

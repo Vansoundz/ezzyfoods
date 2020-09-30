@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadOrders } from "../../store/actions/orders";
-import M from "materialize-css";
 import DOrder from "./DOrder";
 import { RootReducer } from "../../store/reducers/root";
 
@@ -10,10 +9,6 @@ const List = () => {
     orders: state.orders.orders,
   }));
   const dispatch = useDispatch();
-  useEffect(() => {
-    var elems = document.querySelectorAll(".collapsible");
-    M.Collapsible.init(elems);
-  });
 
   useEffect(() => {
     dispatch(loadOrders());

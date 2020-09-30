@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import M from "materialize-css";
 import { addToCart } from "../../store/actions/product";
 import firebase from "../../firebase/init";
 import { RootReducer } from "../../store/reducers/root";
 import { ProductModel } from "../../models/product.model";
+import { toast } from "react-toastify";
 
 interface IProps {
   product: ProductModel;
@@ -34,7 +34,7 @@ const PCard: FC<IProps> = ({ product }) => {
   }, [id, img, storage]);
 
   const addProdToCart = (product: ProductModel) => {
-    M.toast({ html: `${product.name} added` });
+    toast(`${product.name} added`, { type: "info" });
     dispatch(addToCart(product));
   };
 

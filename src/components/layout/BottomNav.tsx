@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideNav from "./SideNav";
-import M from "materialize-css";
 import { NavLink } from "react-router-dom";
 import { loadCategories } from "../../store/actions/product";
 import { RootReducer } from "../../store/reducers/root";
@@ -14,8 +13,6 @@ const BottomNav = () => {
 
   useEffect(() => {
     dispatch(loadCategories());
-    var elems = document.querySelectorAll(".sidenav");
-    M.Sidenav.init(elems, { edge: "right" });
   }, [dispatch]);
 
   return (

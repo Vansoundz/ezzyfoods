@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import M from "materialize-css";
 import List from "./DOList";
 import Create from "./Create";
 import Summary from "./Summary";
@@ -12,12 +11,6 @@ import { useDispatch } from "react-redux";
 const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    var el = document.querySelectorAll(".scrollspy");
-    M.ScrollSpy.init(el);
-
-    var elems = document.querySelector(".dropdown-trigger")!;
-    M.Dropdown.init(elems);
-
     dispatch(loadSummary());
   }, [dispatch]);
 

@@ -1,8 +1,7 @@
-import React, { Fragment, useState, useEffect, FormEvent } from "react";
+import React, { Fragment, useState, FormEvent } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { editProduct, load } from "../../store/actions/product";
-import M from "materialize-css";
 import { RootReducer } from "../../store/reducers/root";
 import { ProductModel } from "../../models/product.model";
 
@@ -18,11 +17,6 @@ const Edit = () => {
   );
 
   // const types = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-
-  useEffect(() => {
-    var elems = document.querySelectorAll("select");
-    M.FormSelect.init(elems);
-  });
 
   const [formData, setFormdata] = useState<ProductModel>(product!);
 
