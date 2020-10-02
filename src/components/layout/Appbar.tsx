@@ -19,7 +19,7 @@ const Appbar = () => {
 
   return (
     <nav className="orange appbar">
-      <div className="nav-wrapper container">
+      <div className="nav-wrapper">
         <Link to="/" className="brand-logo left">
           {appName}
         </Link>
