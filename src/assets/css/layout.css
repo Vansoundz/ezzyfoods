@@ -1,0 +1,121 @@
+.sidenav {
+  display: grid;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background: #486d87;
+  height: 100vh;
+  width: 290px;
+  right: 0;
+}
+
+.sidenav li {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+.sidenav li > a {
+  letter-spacing: 1px;
+}
+
+.sidenav li.active {
+  background: #ffb838;
+}
+
+.sidenav li.active > * {
+  color: #fff !important;
+}
+
+.sidenav-overlay {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  width: 100vw;
+}
+
+.app .container {
+  background: #d1dde6;
+  min-height: calc(100vh - 102px);
+}
+
+.appbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: #ffb838;
+  box-shadow: 0px 0px 4px #ddd;
+  z-index: 100;
+}
+
+.nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  align-items: center;
+  padding: 0 16px;
+}
+
+a.brand-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+ul.right {
+  display: flex;
+}
+
+nav ul li:not(:last-child) {
+  padding-right: 10px;
+}
+
+.bottom.orange {
+  background: #ffb838;
+  /* color: #ddd; */
+}
+
+.bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  height: 3em;
+  z-index: 100;
+}
+
+.bottom i {
+  color: #eee !important;
+}
+
+.bottom a.active i {
+  color: white !important;
+}
+
+@media screen and (max-width: 767px) and (min-width: 426px) {
+  .app {
+    width: 80% !important;
+  }
+
+  .bottom {
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .app {
+    width: 100% !important;
+  }
+
+  .bottom {
+    width: 100% !important;
+  }
+}

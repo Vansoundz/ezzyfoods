@@ -49,18 +49,16 @@ const productReducer = (state = initState, action: ProductAction): pR => {
     case ADD_TO_CART:
       let order: ProductModel = payload;
       let myOrder = state.order;
-
-      let present = myOrder.find((ord) => ord.id === order.id);
-
+      let present = myOrder.find((ord) => ord._id === order._id);
       if (present)
         myOrder = myOrder.map((ord) => {
-          if (ord.id === order.id) {
-            if (ord?.quantity) ord.quantity++;
+          if (ord._id === order._id) {
+            if (ord?.q) ord.q++;
           }
           return ord;
         });
       else {
-        order.quantity = 1;
+        order.q = 1;
         myOrder = [...myOrder, order];
       }
 
@@ -73,18 +71,18 @@ const productReducer = (state = initState, action: ProductAction): pR => {
       };
     case REMOVE_ORDER:
       let curOrders = state.order;
-      let ord = curOrders.find((o) => o.id === payload.id);
+      let ord = curOrders.find((o) => o._id === payload._id);
       if (ord) {
-        if (ord.quantity)
-          if (ord?.quantity > 1) {
+        if (ord.q)
+          if (ord?.q > 1) {
             curOrders = curOrders.map((order) => {
-              if (order.id === ord?.id) {
-                if (order.quantity) order.quantity--;
+              if (order._id === ord?._id) {
+                if (order.q) order.q--;
               }
               return order;
             });
           } else
-            curOrders = curOrders.filter((order) => order.id !== payload.id);
+            curOrders = curOrders.filter((order) => order._id !== payload._id);
       }
       // curOrders = curOrders.filter((ord) => ord.id !== payload.id);
       let sorted = curOrders.sort(compare);
@@ -97,7 +95,7 @@ const productReducer = (state = initState, action: ProductAction): pR => {
     case REMOVE_PRODUCT:
       var orders: ProductModel[] = [];
       if (state.order.includes(payload)) {
-        orders = state.order.filter((product) => product.id !== payload.id);
+        orders = state.order.filter((product) => product._id !== payload._id);
       }
       return {
         ...state,

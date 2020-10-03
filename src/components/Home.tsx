@@ -1,12 +1,15 @@
-import React from 'react'
-import PList from './product/Plist'
+import React from "react";
+import AppLayout from "./layout/AppLayout";
+import PList from "./product/Plist";
 
 const Home = () => {
   return (
     <div>
-      <PList />
+      <AppLayout>
+        <PList />
+      </AppLayout>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,55 +1,31 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../store/actions/product";
-import firebase from "../../firebase/init";
 import { RootReducer } from "../../store/reducers/root";
 import { ProductModel } from "../../models/product.model";
 import { toast } from "react-toastify";
+import { ADD_TO_CART } from "../../store/actions/types";
 
 interface IProps {
   product: ProductModel;
 }
 
 const PCard: FC<IProps> = ({ product }) => {
-  const { name, price, id, store, img } = product;
+  // @ts-ignore
+  const { name, price, id, store, image } = product;
   const dispatch = useDispatch();
 
   const { added } = useSelector((state: RootReducer) => ({
-    added: state.product.order.find((p) => p.id === product.id) ? true : false,
+    added: state.product.order.find((p) => p._id === product._id)
+      ? true
+      : false,
   }));
-
-  const { storage } = firebase;
-
-  useEffect(() => {
-    storage()
-      .ref(`images/${img}`)
-      .getDownloadURL()
-      .then((url) => {
-        const el = document.getElementById(id!) as HTMLImageElement;
-        if (el) el.src = url;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id, img, storage]);
-
-  const addProdToCart = (product: ProductModel) => {
-    toast(`${product.name} added`, { type: "info" });
-    dispatch(addToCart(product));
-  };
-
-  let icon = added ? (
-    <i className="material-icons">check</i>
-  ) : (
-    <i className="material-icons">add</i>
-  );
 
   return (
     <div className={`card z-depth-1 ${store === 0 ? "hide" : ""}`}>
       <div className="pcard">
         <div className="">
           <div className="img grey lighten-3">
-            <img id={id} alt="" />
+            <img id={id} alt="" src={image} />
           </div>
         </div>
         <div className="pinfo">
@@ -65,10 +41,14 @@ const PCard: FC<IProps> = ({ product }) => {
               className="orange btn"
               disabled={store === 0}
               onClick={() => {
-                addProdToCart(product);
+                toast("Added to basket", { type: "info" });
+                dispatch({
+                  type: ADD_TO_CART,
+                  payload: product,
+                });
               }}
             >
-              {icon}
+              <i className="material-icons">{added ? "check" : "add"}</i>
             </button>
           </div>
         </div>

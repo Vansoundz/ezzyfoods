@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart, removeOrder } from "../../store/actions/product";
 import { ProductModel } from "../../models/product.model";
+import { ADD_TO_CART, REMOVE_ORDER } from "../../store/actions/types";
 
 interface IProps {
   order: ProductModel;
@@ -10,22 +10,26 @@ interface IProps {
 
 const Order: FC<IProps> = ({ order, index }) => {
   const dispatch = useDispatch();
+
   return (
     <div className="order">
       <span>{index + 1}</span>
       <span>{order.name}</span>
       <span>{order.price}</span>
-      <span>{order.quantity}</span>
+      <span>{order.q}</span>
       <span
         onClick={() => {
-          dispatch(addToCart(order));
+          dispatch({
+            type: ADD_TO_CART,
+            payload: order,
+          });
         }}
       >
         <i className="material-icons">add</i>
       </span>
       <span
         onClick={() => {
-          dispatch(removeOrder(order));
+          dispatch({ type: REMOVE_ORDER, payload: order });
         }}
       >
         <i className="material-icons">remove</i>

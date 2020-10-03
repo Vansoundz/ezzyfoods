@@ -3,18 +3,19 @@ import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "../../store/reducers/root";
 import { useMutation } from "react-query";
-import { login } from "../../data/auth.data";
+import { register } from "../../data/auth.data";
 import Loading from "../layout/Loading";
 import { toast } from "react-toastify";
 import { LOGIN } from "../../store/actions/types";
+import { UserModel } from "../../models/user.model";
 
-const Login = () => {
+const Register = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => ({
     isAuthenticated: state.auth.isAuthenticated,
   }));
 
   const dispatch = useDispatch();
-  const [loginUser, { data, isLoading }] = useMutation(login);
+  const [registerUser, { data, isLoading }] = useMutation(register);
 
   useEffect(() => {
     if (data?.errors) {
@@ -32,10 +33,7 @@ const Login = () => {
     }
   }, [data, dispatch]);
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState<UserModel>({});
 
   const onChange = (e: FormEvent<HTMLInputElement>) => {
     setFormData({
@@ -46,9 +44,8 @@ const Login = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const { email, password } = formData;
 
-    loginUser({ email, password });
+    registerUser({ user: formData });
   };
 
   if (isAuthenticated) {
@@ -69,10 +66,18 @@ const Login = () => {
       </div>
 
       <form onSubmit={onSubmit} className="auth">
-        <h4>Login</h4>
+        <h4>Register</h4>
+        <div className="input-field">
+          <label htmlFor="name">Name</label>
+          <input id="name" type="text" required onChange={onChange} />
+        </div>
         <div className="input-field">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" required onChange={onChange} />
+        </div>
+        <div className="input-field">
+          <label htmlFor="phone">Phone</label>
+          <input id="phone" type="tel" required onChange={onChange} />
         </div>
         <div className="input-field">
           <label htmlFor="password">Password</label>
@@ -82,7 +87,7 @@ const Login = () => {
           <input
             id="submit"
             type="submit"
-            value="Login"
+            value="Register"
             className="btn orange"
           />
         </div>
@@ -91,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

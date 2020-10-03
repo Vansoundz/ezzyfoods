@@ -1,8 +1,13 @@
-import React, { FC, FormEvent, useState } from "react";
-import { placeOrder } from "../../store/actions/orders";
+import React, { FC, FormEvent, useEffect, useState } from "react";
+// import { placeOrder } from "../../store/actions/orders";
 import { clearOrder } from "../../store/actions/product";
 import { useDispatch } from "react-redux";
 import { ProductModel } from "../../models/product.model";
+import { OrderModel } from "../../models/order.model";
+import { useMutation } from "react-query";
+import { placeOrder } from "../../data/order.data";
+import { toast } from "react-toastify";
+import Loading from "../layout/Loading";
 
 interface IProps {
   order: ProductModel[];
@@ -12,10 +17,29 @@ interface IProps {
 const CompleteOrder: FC<IProps> = ({ order, total }) => {
   const [submitted, submit] = useState(false);
   const [formData, setFormData] = useState({
-    nickname: "",
+    name: "",
     phone: "",
   });
   const dispatch = useDispatch();
+  const [makeOrder, { data, isLoading }] = useMutation(placeOrder);
+
+  useEffect(() => {
+    if (data?.errors) {
+      data.errors.forEach(({ msg }: { msg: string }) =>
+        toast(msg, { type: "error" })
+      );
+    }
+
+    if (data?.order) {
+      toast("Order placed successfully", { type: "success" });
+      submit(true);
+      setFormData({
+        name: "",
+        phone: "",
+      });
+      dispatch(clearOrder());
+    }
+  }, [data, dispatch]);
 
   const onChange = (e: FormEvent<HTMLInputElement>) => {
     setFormData({
@@ -27,42 +51,26 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const { nickname, phone } = formData;
+    const { name, phone } = formData;
 
-    if (!nickname.trim()) {
-      // const err = {
-      //   msg: "Enter a valid name or nickname",
-      //   type: "red",
-      // };
-      // setAlert(err);
+    if (!name.trim()) {
+      toast("Name is required", { type: "error" });
     } else if (phone.length < 10) {
-      // const err = {
-      //   msg: "Enter a valid phone number",
-      //   type: "red",
-      // };
-      // setAlert(err);
+      toast("Phone is required", { type: "error" });
     } else {
-      const newOrder = {
+      const newOrder: OrderModel = {
         customer: formData,
         products: order,
         total,
       };
 
-      await placeOrder(newOrder);
-      setFormData({
-        nickname: "",
-        phone: "",
-      });
-      // document.forms['mform'].reset()
-      submit(true);
-      setTimeout(() => {
-        dispatch(clearOrder());
-      }, 1000);
+      await makeOrder({ order: newOrder });
     }
   };
 
   return (
-    <div className="center corder">
+    <div className="corder">
+      {isLoading && <Loading />}
       {submitted ? (
         <div>
           <h4>Thank you, Your order was placed successfully</h4>
@@ -73,14 +81,14 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
           <h5>Help us get to you</h5>
           <form id="mform" className="mform" onSubmit={onSubmit}>
             <div className="input-field">
-              <label htmlFor="nickname"> Name or nickname</label>
-              <input type="text" required onChange={onChange} id="nickname" />
+              <label htmlFor="name"> Name or name</label>
+              <input type="text" required onChange={onChange} id="name" />
             </div>
             <div className="input-field">
               <label htmlFor="phone"> Enter Phone number</label>
               <input type="tel" required onChange={onChange} id="phone" />
             </div>
-            <div className="input-field center">
+            <div className="input-field">
               <input
                 type="submit"
                 className="btn orange darken-2"

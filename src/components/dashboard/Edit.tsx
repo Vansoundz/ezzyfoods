@@ -1,153 +1,172 @@
-import React, { Fragment, useState, FormEvent } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, FormEvent, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { editProduct, load } from "../../store/actions/product";
-import { RootReducer } from "../../store/reducers/root";
 import { ProductModel } from "../../models/product.model";
+import {
+  getCategories,
+  getProduct,
+  updateProduct,
+} from "../../data/product.data";
+import { useMutation, useQuery } from "react-query";
+import Loading from "../layout/Loading";
+import { toast } from "react-toastify";
 
 const Edit = () => {
   const { id: pId } = useParams<{ id: string }>();
-
-  const { categories, loading, product } = useSelector(
-    (state: RootReducer) => ({
-      categories: state.product.categories,
-      product: state.product.products.find((prd) => prd.id === pId),
-      loading: state.product.loading,
-    })
+  const { data: categories } = useQuery("get cateories", getCategories);
+  const { data: product, isLoading } = useQuery(
+    ["get product by Id", pId],
+    getProduct
   );
 
   // const types = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
-  const [formData, setFormdata] = useState<ProductModel>(product!);
+  const [formData, setFormdata] = useState<ProductModel>({});
+  const [editProduct, { data: editData, isLoading: editLoading }] = useMutation(
+    updateProduct
+  );
 
-  const { name, price, store, category } = formData;
+  useEffect(() => {
+    if (editData?.errors) {
+      editData.errors.forEach(({ msg }: { msg: string }) =>
+        toast(msg, { type: "error" })
+      );
+    }
+    if (editData?.product) {
+      toast("Product edited successfully", { type: "success" });
+    }
+  }, [editData]);
+
+  useEffect(() => {
+    if (product?.product) setFormdata(product.product);
+  }, [product]);
+
+  const { name, price, quantity, category } = formData;
 
   const onChange = (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormdata({
       ...formData,
-      [`t${e.currentTarget.id}`]: e.currentTarget.value,
+      [`${e.currentTarget.id}`]: e.currentTarget.value,
     });
   };
 
   const editProd = (e: FormEvent) => {
     e.preventDefault();
-    const el = document.getElementById("file") as HTMLInputElement;
-    // @ts-ignore
-    const file = el?.files[0];
-    const { name, price, store, category, id } = formData;
+    const { name, price, quantity, category } = formData;
 
     if (!name || !name.trim()) {
-      // setAlert({ msg: "Enter a valid product name", type: "red" });
+      toast("Enter a valid product name", { type: "error" });
     } else if (!price || !price.toString().trim()) {
-      // setAlert({ msg: "Enter a valid product price", type: "red" });
-    } else if (!store || !store.toString().trim()) {
-      // setAlert({ msg: "Enter a valid product quantity", type: "red" });
-    } else if (!category || !category.trim()) {
-      // setAlert({ msg: "Enter a valid product category", type: "red" });
+      toast("Enter a valid product price", { type: "error" });
+    } else if (!quantity || !quantity.toString().trim()) {
+      toast("Enter a valid product quantity", { type: "error" });
+    } else if (!category) {
+      toast("Enter a valid product category", { type: "error" });
     } else {
-      let newProduct = file
-        ? {
-            name: name,
-            price: price,
-            store: store,
-            category: category,
-            quantity: 1,
-            id,
-            file,
-            img: file.name,
-          }
-        : {
-            name: name,
-            price: price,
-            store: store,
-            category: category,
-            quantity: 1,
-            id,
-          };
-      load();
-      editProduct(newProduct);
-      setFormdata({
-        name: "",
-        price: "",
-        store: "",
-        category: "",
-        id: "",
-      });
-      // document.forms["product"].reset();
+      editProduct({ product: formData });
     }
   };
 
   return (
-    <Fragment>
-      <div>
-        <h6>Edit product</h6>
-        {loading ? (
-          <div className="preloader-wrapper big active">
-            <div className="spinner-layer spinner-blue-only">
-              <div className="circle-clipper left">
-                <div className="circle"></div>
-              </div>
-              <div className="gap-patch">
-                <div className="circle"></div>
-              </div>
-              <div className="circle-clipper right">
-                <div className="circle"></div>
-              </div>
-            </div>
+    <div>
+      {(isLoading || editLoading) && <Loading />}
+      <div className="create">
+        <h4>Edit product</h4>
+        <form onSubmit={editProd} id="product">
+          <div className="input-field">
+            {/**<label htmlFor="name">Product title</label> **/}
+            <input
+              value={name || ""}
+              onChange={onChange}
+              type="text"
+              id="name"
+            />
           </div>
-        ) : (
-          <form onSubmit={editProd} id="product">
-            <div className="input-field">
-              {/**<label htmlFor="name">Product title</label> **/}
-              <input value={name} onChange={onChange} type="text" id="name" />
-            </div>
-            <div className="input-field">
-              {/**<label htmlFor="price">Product price</label>**/}
-              <input
-                value={price}
-                onChange={onChange}
-                type="number"
-                id="price"
-              />
-            </div>
-            <div className="input-field">
-              {/**<label htmlFor="store">Product quantity</label>**/}
-              <input value={store} onChange={onChange} type="text" id="store" />
-            </div>
-            <div className="input-field">
-              {/**<label>Materialize Select</label> **/}
-              <select value={category} onChange={onChange} id="category">
-                <option disabled>Choose your option</option>
-                {categories &&
-                  categories.map((c, i) => {
+          <div className="input-field">
+            {/**<label htmlFor="price">Product price</label>**/}
+            <input
+              value={price || ""}
+              onChange={onChange}
+              type="number"
+              id="price"
+            />
+          </div>
+          <div className="input-field">
+            {/**<label htmlFor="quantity">Product quantity</label>**/}
+            <input
+              value={quantity || ""}
+              onChange={onChange}
+              type="text"
+              id="quantity"
+            />
+          </div>
+          <div className="input-field">
+            {/**<label>Materialize Select</label> **/}
+            <select
+              value={typeof category === "string" ? category : category?.name}
+              onChange={onChange}
+              id="category"
+            >
+              <option disabled>Choose your option</option>
+              {categories &&
+                categories.categories &&
+                categories.categories.map(
+                  ({ _id, name }: { name: string; _id: string }) => {
                     return (
-                      <option key={i} value={c}>
-                        {c}
+                      <option key={_id} value={_id}>
+                        {name}
                       </option>
                     );
-                  })}
-              </select>
-            </div>
-            <div className="file-field input-field">
-              <div className="btn orange">
-                <i className="material-icons">cloud_upload</i>
-                <input type="file" id="file" />
+                  }
+                )}
+            </select>
+          </div>
+          <div className="input-field">
+            {formData.file ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>Selected: {formData.file.name}</div>
+                <div>
+                  <div
+                    onClick={() =>
+                      setFormdata({ ...formData, file: undefined })
+                    }
+                    className="material-icons"
+                  >
+                    close
+                  </div>
+                </div>
               </div>
-
-              <div className="file-path-wrapper">
-                <input
-                  className="file-path validate"
-                  type="text"
-                  id="img"
-                  placeholder="Upload file"
-                />
-              </div>
-            </div>
-            <button className="btn orange">Edit</button>
-          </form>
-        )}
+            ) : (
+              <>
+                <div className="">
+                  <label htmlFor="file">
+                    <i className="material-icons">cloud_upload</i>
+                  </label>
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setFormdata({ ...formData, file: e.target.files[0] });
+                      }
+                    }}
+                    id="file"
+                    style={{ display: "none" }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <button className="e-button">Edit</button>
+          </div>
+        </form>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

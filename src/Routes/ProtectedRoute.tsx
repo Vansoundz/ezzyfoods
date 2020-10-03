@@ -8,11 +8,16 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useSelector((state: RootReducer) => ({
     isAuthenticated: state.auth.isAuthenticated,
   }));
+  const t = localStorage._eat;
   return (
     <Route
       {...rest}
       render={(props) => {
-        return isAuthenticated ? <Component {...props} /> : <Redirect to="/" />;
+        return isAuthenticated && t ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/" />
+        );
       }}
     />
   );

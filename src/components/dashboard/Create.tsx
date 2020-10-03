@@ -1,27 +1,57 @@
-import React, { Fragment, useState, FormEvent } from "react";
-
-import { useSelector } from "react-redux";
+import React, { useState, FormEvent, useEffect } from "react";
+// import { useSelector } from "react-redux";
+// import { RootReducer } from "../../store/reducers/root";
+import { ProductModel } from "../../models/product.model";
+import { useMutation, useQuery } from "react-query";
 import {
   createCategory,
   createProduct,
-  load,
-} from "../../store/actions/product";
-import { RootReducer } from "../../store/reducers/root";
-import { ProductModel } from "../../models/product.model";
+  getCategories,
+} from "../../data/product.data";
+import { toast } from "react-toastify";
+import Loading from "../layout/Loading";
 
 const Create = () => {
   const types = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+  const [newCategory, setNewCategory] = useState("");
+  const [createNewProduct, { data, isLoading }] = useMutation(createProduct);
+  const [
+    createNewCategory,
+    { data: categoryData, isLoading: categoryLoading },
+  ] = useMutation(createCategory);
 
-  const { categories, loading } = useSelector((state: RootReducer) => ({
-    categories: state.product.categories,
-    loading: state.product.loading,
-  }));
+  const { data: categories, refetch: refetchCategories } = useQuery(
+    "get categories",
+    getCategories
+  );
+
+  useEffect(() => {
+    if (categoryData?.errors) {
+      categoryData.errors.forEach(({ msg }: { msg: string }) =>
+        toast(msg, { type: "error" })
+      );
+    }
+
+    if (categoryData?.category) {
+      toast("Category created successfully", { type: "success" });
+      refetchCategories();
+    }
+  }, [categoryData, refetchCategories]);
+
+  useEffect(() => {
+    if (data?.errors) {
+      data.errors.forEach(({ msg }: { msg: string }) =>
+        toast(msg, { type: "error" })
+      );
+    }
+
+    if (data?.product) {
+      toast("Product created successfully", { type: "success" });
+    }
+  }, [data]);
 
   const [formData, setFormdata] = useState<ProductModel>({});
-
-  const { name, price, store } = formData;
-
-  // const [create, setCreate] = useState(true)
+  const { quantity, price, name } = formData;
 
   const onChange = (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormdata({
@@ -30,51 +60,28 @@ const Create = () => {
     });
   };
 
-  // const selectChange = (e: FormEvent<HTMLSelectElement>) => {
-  //   setFormdata({
-  //     ...formData,
-  //     category: e.currentTarget.value
-  //   })
-  // }
-
-  const createCat = (e: FormEvent) => {
+  const createCat = async (e: FormEvent) => {
     e.preventDefault();
-    if (!formData.category?.trim()) {
-      // setAlert({ msg: "Enter a valid category name", type: "red" });
-    } else {
-      createCategory(formData?.category?.toLowerCase());
-      // document.forms['fcategory'].reset()
-    }
+    await createNewCategory({ name: newCategory });
+    const el = document.getElementById("newCategory") as HTMLInputElement;
+    el.value = "";
   };
 
-  const createProd = (e: FormEvent) => {
+  const createProd = async (e: FormEvent) => {
     e.preventDefault();
-    const { name, price, store, category } = formData;
-    const el = document.getElementById("file") as HTMLInputElement;
-    const file = el.files ? el?.files[0] : undefined;
+    const { name, price, category, file } = formData;
 
     if (!name || !name.trim()) {
-      // setAlert({ msg: "Enter a valid product name", type: "red" });
+      toast("Enter a valid product name", { type: "error" });
     } else if (!price || !price.trim()) {
-      // setAlert({ msg: "Enter a valid product price", type: "red" });
-    } else if (!store || !store?.toString().trim()) {
-      // setAlert({ msg: "Enter a valid product quantity", type: "red" });
-    } else if (!category || !category.trim()) {
-      // setAlert({ msg: "Enter a valid product category", type: "red" });
+      toast("Enter a valid product price", { type: "error" });
+    } else if (!category) {
+      toast("Enter a valid product category", { type: "error" });
     } else if (!file || !types.includes(file.type)) {
-      // setAlert({ msg: "Please a valid product image", type: "red" });
+      toast("Please a valid product image", { type: "error" });
     } else {
-      const img = file.name;
-      let product = {
-        name,
-        price,
-        store,
-        category,
-        file,
-        img,
-      };
-      load();
-      createProduct(product);
+      await createNewProduct({ product: formData });
+
       setFormdata({
         name: "",
         price: "",
@@ -82,98 +89,132 @@ const Create = () => {
         category: "",
         file: undefined,
       });
+
       // document.forms['product'].reset()
     }
   };
 
   return (
-    <Fragment>
-      <div>
+    <div>
+      {(categoryLoading || isLoading) && <Loading />}
+      <div className="create">
         <h6>Create a product category</h6>
         <form onSubmit={createCat} className="row" id="fcategory">
           <div className="input-field left col s10">
             <label htmlFor="category">Category</label>
-            <input onChange={onChange} type="text" id="category" />
+            <input
+              onChange={(e) => {
+                if (!e.target.value.match(/\s/g))
+                  setNewCategory(e.target.value);
+              }}
+              type="text"
+              id="newCategory"
+            />
           </div>
-          <button className="btn orange right col s2">
+          <button className=" right col s2">
             <i className="material-icons">add</i>
           </button>
         </form>
       </div>
-      <div>
+      <div style={{ marginTop: "24px" }} className="create">
         <h6>Create a product</h6>
-        {loading ? (
-          <div className="preloader-wrapper big active">
-            <div className="spinner-layer spinner-blue-only">
-              <div className="circle-clipper left">
-                <div className="circle"></div>
-              </div>
-              <div className="gap-patch">
-                <div className="circle"></div>
-              </div>
-              <div className="circle-clipper right">
-                <div className="circle"></div>
-              </div>
-            </div>
+        <form onSubmit={createProd} id="product">
+          <div className="input-field">
+            <label htmlFor="name">Product title</label>
+            <input
+              value={name || ""}
+              onChange={onChange}
+              type="text"
+              id="name"
+            />
           </div>
-        ) : (
-          <form onSubmit={createProd} id="product">
-            <div className="input-field">
-              <label htmlFor="name">Product title</label>
-              <input value={name} onChange={onChange} type="text" id="name" />
-            </div>
-            <div className="input-field">
-              <label htmlFor="price">Product price</label>
-              <input
-                value={price}
-                onChange={onChange}
-                type="number"
-                id="price"
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="store">Product quantity</label>
-              <input value={store} onChange={onChange} type="text" id="store" />
-            </div>
-            <div className="input-field">
-              <select
-                defaultValue="Choose your option"
-                onChange={onChange}
-                id="category"
-              >
-                <option defaultValue="Choose your option" disabled>
-                  Choose your option
-                </option>
-                {categories &&
-                  categories.map((c, i) => {
+          <div className="input-field">
+            <label htmlFor="price">Product price</label>
+            <input
+              value={price || ""}
+              onChange={onChange}
+              type="number"
+              id="price"
+            />
+          </div>
+          <div className="input-field">
+            <label htmlFor="quantity">Product quantity</label>
+            <input
+              value={quantity || ""}
+              onChange={onChange}
+              type="number"
+              id="quantity"
+            />
+          </div>
+          <div className="input-field">
+            <select
+              defaultValue="Choose your option"
+              onChange={onChange}
+              id="category"
+            >
+              <option defaultValue="Choose your option" disabled>
+                Choose your option
+              </option>
+              {categories &&
+                categories.categories &&
+                categories.categories.map(
+                  ({ _id, name }: { name: string; _id: string }) => {
                     return (
-                      <option key={i} value={c}>
-                        {c}
+                      <option key={_id} value={_id}>
+                        {name}
                       </option>
                     );
-                  })}
-              </select>
-            </div>
-            <div className="file-field input-field">
-              <div className="btn orange">
-                <i className="material-icons">cloud_upload</i>
-                <input type="file" id="file" />
+                  }
+                )}
+            </select>
+          </div>
+          <div className="input-field">
+            {formData.file ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>Selected: {formData.file.name}</div>
+                <div>
+                  <div
+                    onClick={() =>
+                      setFormdata({ ...formData, file: undefined })
+                    }
+                    className="material-icons"
+                  >
+                    close
+                  </div>
+                </div>
               </div>
-
-              <div className="file-path-wrapper">
-                <input
-                  className="file-path validate"
-                  type="text"
-                  id="img"
-                  placeholder="Upload file"
-                />
-              </div>
-            </div>
-            <button className="btn orange">Create</button>
-          </form>
-        )}
+            ) : (
+              <>
+                <div className="">
+                  <label htmlFor="file">
+                    <i className="material-icons">cloud_upload</i>
+                  </label>
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setFormdata({ ...formData, file: e.target.files[0] });
+                      }
+                    }}
+                    id="file"
+                    style={{ display: "none" }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <button className="e-button">Create</button>
+          </div>
+        </form>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

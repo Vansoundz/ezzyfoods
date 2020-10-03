@@ -1,26 +1,37 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import SideNav from "./SideNav";
 import { NavLink } from "react-router-dom";
-import { loadCategories } from "../../store/actions/product";
 import { RootReducer } from "../../store/reducers/root";
 import { AnimatePresence, motion } from "framer-motion";
+import { useQuery } from "react-query";
+import { getCategories } from "../../data/product.data";
 
 const BottomNav = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state: RootReducer) => ({
     isAuthenticated: state.auth.isAuthenticated,
   }));
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
+    []
+  );
+  const { data } = useQuery("get categories", getCategories);
 
   useEffect(() => {
-    dispatch(loadCategories());
-  }, [dispatch]);
+    if (data?.categories) {
+      setCategories(data.categories);
+    }
+  }, [data]);
 
   return (
     <div>
       <AnimatePresence>
-        {open && <SideNav setOpen={setOpen} open={open} />}
+        {open && (
+          <SideNav setOpen={setOpen} categories={categories} open={open} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0 }}

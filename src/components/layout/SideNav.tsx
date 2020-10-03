@@ -1,18 +1,18 @@
 import React, { FC } from "react";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootReducer } from "../../store/reducers/root";
+import { NavLink, useParams, useLocation } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import { RootReducer } from "../../store/reducers/root";
 import { motion } from "framer-motion";
 
 interface IProps {
   setOpen: (v: boolean) => void;
   open: boolean;
+  categories: { name: string; _id: string }[];
 }
 
-const SideNav: FC<IProps> = ({ open, setOpen }) => {
-  const { categories } = useSelector((state: RootReducer) => ({
-    categories: state.product.categories,
-  }));
+const SideNav: FC<IProps> = ({ open, setOpen, categories }) => {
+  const { category } = useParams<{ category: string }>();
+  const l = useLocation();
 
   return (
     <motion.ul
@@ -33,17 +33,29 @@ const SideNav: FC<IProps> = ({ open, setOpen }) => {
       className="sidenav"
     >
       <span>
-        <li onClick={() => setOpen(!open)}>
+        <li
+          className={l.pathname === "/" ? "active" : ""}
+          onClick={() => setOpen(!open)}
+        >
           <NavLink className="sidenav-close" exact to="/">
             All
           </NavLink>
         </li>
         {categories &&
-          categories.map((category, i) => {
+          categories.map(({ name, _id }, i) => {
             return (
-              <li key={i} onClick={() => setOpen(!open)}>
-                <NavLink className="sidenav-close" to={`/${category}`}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+              <li
+                key={i}
+                className={category === _id ? "active" : ""}
+                onClick={() => setOpen(!open)}
+              >
+                <NavLink
+                  style={{ textTransform: "capitalize" }}
+                  className="sidenav-close"
+                  to={`/products/${_id}`}
+                >
+                  {name}
+                  {/* {name.charAt(0).toUpperCase() + name.slice(1)} */}
                 </NavLink>
               </li>
             );

@@ -1,0 +1,35 @@
+.img,
+img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.pcard {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  /* padding: 8px; */
+  align-items: center;
+  background: #fffdfd;
+  margin: 14px;
+  border-radius: 8px;
+  box-shadow: 0 0 2px #fff;
+  overflow: hidden;
+}
+
+.pcard > div:first-child {
+  padding: 8px;
+  background: linear-gradient(135deg, #fee5a5, #d1dde6);
+}
+
+.pinfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-left: 6px;
+  padding-right: 8px;
+}
+
+.plist {
+  padding: 16px 4px;
+}

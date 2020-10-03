@@ -98,29 +98,29 @@ export const createCategory = async (c: string) => {
 };
 
 export const createProduct = async (product: ProductModel) => {
-  const { firestore, storage } = firebase;
-  const { name, price, store, category, img } = product;
-  const prod = { name, price, store, category, img };
+  const { firestore } = firebase;
+  const { name, price, store, category } = product;
+  const prod = { name, price, store, category };
 
-  if (product.file) {
-    await storage().ref(`images/${product.img}`).put(product.file);
-  }
+  // if (product.file) {
+  //   await storage().ref(`images/${product.img}`).put(product.file);
+  // }
 
   await firestore().collection("products").add(prod);
 };
 
 export const editProduct = async (product: ProductModel) => {
-  const { firestore, storage } = firebase;
-  const { name, price, store, category, img, file, id } = product;
+  const { firestore } = firebase;
+  const { name, price, store, category, file, id } = product;
   const prod = file
-    ? { name, price, store, category, img }
+    ? { name, price, store, category }
     : { name, price, store, category };
 
   try {
     if (!file) {
       await firestore().collection("products").doc(id).update(prod);
     } else {
-      await storage().ref(`images/${img}`).put(file);
+      // await storage().ref(`images/${img}`).put(file);
       await firestore().collection("products").doc(id).update(prod);
     }
   } catch (error) {

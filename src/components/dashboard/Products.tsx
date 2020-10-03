@@ -1,64 +1,69 @@
-import React, { Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct } from "../../store/actions/product";
-import { RootReducer } from "../../store/reducers/root";
+import { useMutation, useQuery } from "react-query";
+import { getProducts, deleteProduct } from "../../data/product.data";
+import { ProductModel } from "../../models/product.model";
+import Loading from "../layout/Loading";
 
 const Products = () => {
-  const { products } = useSelector((state: RootReducer) => ({
-    products: state.product.products,
-  }));
+  const [products, setProducts] = useState<ProductModel[]>([]);
 
-  const dispatch = useDispatch();
+  const { data, isLoading } = useQuery("get products", getProducts);
+  const [deleteProd] = useMutation(deleteProduct);
+
+  useEffect(() => {
+    if (data?.products) {
+      setProducts(data.products);
+    }
+  }, [data]);
 
   return (
-    <Fragment>
+    <div className="d-products">
+      {isLoading && <Loading />}
       <h4>All products</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Category</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
+      <>
+        <div className="d-product" id="dphead">
+          <span>Name</span>
+          <span>Price</span>
+          <span>Quantity</span>
+          <span>Category</span>
+          <span>Edit</span>
+          <span>Delete</span>
+        </div>
 
-        <tbody>
+        <>
           {products &&
             products.map((product) => {
-              const { name, price, store, category, id } = product;
+              const { name, price, quantity, category, _id } = product;
               return (
-                <tr key={id}>
-                  <td>{name}</td>
-                  <td>{price}</td>
-                  <td>{store}</td>
-                  <td>{category}</td>
-                  <td>
-                    <Link to={`/edit/${id}`}>
+                <div className="d-product" key={_id}>
+                  <span>{name}</span>
+                  <span>{price}</span>
+                  <span>{quantity}</span>
+                  <span>{typeof category === "object" && category.name}</span>
+                  <span>
+                    <Link to={`/edit/${_id}`}>
                       <i className="material-icons">edit</i>
                     </Link>
-                  </td>
-                  <td>
+                  </span>
+                  <span>
                     <i
-                      onClick={() => {
+                      onClick={async () => {
                         // eslint-disable-next-line
                         let c = confirm(`Do you want to delete ${name}`);
-                        if (c) dispatch(deleteProduct(id!));
+                        if (c) await deleteProd({ id: _id! });
                       }}
                       className="material-icons red-text"
                     >
                       close
                     </i>
-                  </td>
-                </tr>
+                  </span>
+                </div>
               );
             })}
-        </tbody>
-      </table>
-    </Fragment>
+        </>
+      </>
+    </div>
   );
 };
 

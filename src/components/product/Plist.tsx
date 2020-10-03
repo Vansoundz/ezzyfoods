@@ -1,40 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PCard from "./PCard";
-import { useDispatch, useSelector } from "react-redux";
-import { loadProducts } from "../../store/actions/product";
-import { RootReducer } from "../../store/reducers/root";
+// import { useDispatch, useSelector } from "react-redux";
+// import { loadProducts } from "../../store/actions/product";
+// import { RootReducer } from "../../store/reducers/root";
+import { useQuery } from "react-query";
+import { getProducts } from "../../data/product.data";
+import { ProductModel } from "../../models/product.model";
+import Loading from "../layout/Loading";
 
 const PList = () => {
-  const { products } = useSelector((state: RootReducer) => ({
-    products: state.product.products,
-  }));
-  const dispatch = useDispatch();
+  // const { products } = useSelector((state: RootReducer) => ({
+  //   products: state.product.products,
+  // }));
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(loadProducts());
+  // }, [dispatch]);
+  const [products, setProducts] = useState<ProductModel[]>([]);
+
+  const { data, isLoading } = useQuery("get products", getProducts);
+
   useEffect(() => {
-    dispatch(loadProducts());
-  }, [dispatch]);
+    if (data?.products) {
+      setProducts(data.products);
+    }
+  }, [data]);
 
   return (
     <div className="plist">
-      {products.length > 0 ? (
+      {isLoading && <Loading />}
+      {products.length > 0 &&
         products &&
-        products.map((product) => {
-          return <PCard product={product} key={product.id} />;
-        })
-      ) : (
-        <div className="preloader-wrapper big active">
-          <div className="spinner-layer spinner-blue-only">
-            <div className="circle-clipper left">
-              <div className="circle"></div>
-            </div>
-            <div className="gap-patch">
-              <div className="circle"></div>
-            </div>
-            <div className="circle-clipper right">
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
-      )}
+        products.map((product, i) => {
+          return <PCard product={product} key={i} />;
+        })}
     </div>
   );
 };

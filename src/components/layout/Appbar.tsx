@@ -24,11 +24,8 @@ const Appbar = () => {
           {appName}
         </Link>
         <ul className="right">
-          {/**<li>
-              <i className='material-icons'>search</i>
-            </li> **/}
           <li>
-            <Link to="/order">
+            <Link to="/order" style={{ position: "relative" }}>
               <i className="material-icons">shopping_cart</i>
               {badge}
             </Link>
