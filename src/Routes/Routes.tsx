@@ -37,7 +37,6 @@ const Routes = () => {
         <ProtectedRoute path="/edit/:id" component={Edit} />
         <ProtectedRoute path="/create" component={Create} />
         <ProtectedRoute path="/orders" component={List} />
-        <ProtectedRoute path="/stats" component={Summary} />
       </DashLayout>
     </Switch>
   );
