@@ -1,60 +1,116 @@
-import React, { Fragment } from "react";
-import { useSelector } from "react-redux";
-import { RootReducer } from "../../store/reducers/root";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getOrders } from "../../data/order.data";
+import { OrderModel } from "../../models/order.model";
+import Loading from "../layout/Loading";
 
 const Summary = () => {
-  const { pendingOrders, summary } = useSelector((state: RootReducer) => ({
-    summary: state.orders.summary,
-    pendingOrders: state.orders?.orders?.length,
-  }));
-  // eslint-disable
-  const {
-    // @ts-ignore
-    totalOrders,
-    // @ts-ignore
-    successfulDeliveries,
-    // @ts-ignore
-    unsuccessfulDeliveries,
-    // @ts-ignore
-    // deliveries,
-    // @ts-ignore
-    totalSales,
-  } = summary;
+  const [orders, setOrders] = useState<OrderModel[]>([]);
+  const { data, isLoading } = useQuery("Get orders", getOrders);
+
+  useEffect(() => {
+    if (data?.orders) {
+      setOrders(
+        // @ts-ignore
+        data.orders
+      );
+    }
+  }, [data]);
 
   return (
-    <Fragment>
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Total Orders</td>
-            <td>{totalOrders}</td>
-          </tr>
-          <tr>
-            <td>Successful Deliveries</td>
-            <td>{successfulDeliveries}</td>
-          </tr>
-          <tr>
-            <td>Unsuccessful Deliveries</td>
-            <td>{unsuccessfulDeliveries}</td>
-          </tr>
-          <tr>
-            <td>Pending Orders</td>
-            <td>{pendingOrders}</td>
-          </tr>
-          <tr>
-            <td> Total Sales</td>
-            <td>{totalSales}</td>
-          </tr>
-        </tbody>
-      </table>
-    </Fragment>
+    <div className="overview">
+      {isLoading && <Loading />}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #3498db, #97d6ff)",
+        }}
+        className="stat"
+      >
+        <div>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: 300,
+            }}
+          >
+            Total
+          </div>
+          <div>Orders</div>
+        </div>
+        <div>
+          <div style={{ fontSize: "24px" }}>{orders.length}</div>
+        </div>
+      </div>
+      <div
+        style={{
+          background: "linear-gradient(135deg, #97d6ff, #e050b5)",
+        }}
+        className="stat"
+      >
+        <div>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: 300,
+            }}
+          >
+            Pending
+          </div>
+          <div>Orders</div>
+        </div>
+        <div>
+          <div style={{ fontSize: "24px" }}>
+            {Math.floor(Math.random() * 10)}
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          background: "linear-gradient(135deg, #31e07a, #ec8c5a)",
+        }}
+        className="stat"
+      >
+        <div>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: 300,
+            }}
+          >
+            Successful
+          </div>
+          <div>Deliveries</div>
+        </div>
+        <div>
+          <div style={{ fontSize: "24px" }}>
+            {Math.floor(Math.random() * 5)}
+          </div>
+        </div>
+      </div>
+      <div
+        // style={{
+        //   background: "linear-gradient(135deg, #, #)",
+        // }}
+        className="stat"
+      >
+        <div>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: 300,
+            }}
+          >
+            Unsuccessful
+          </div>
+          <div>Deliveries</div>
+        </div>
+        <div>
+          <div style={{ fontSize: "24px" }}>
+            {Math.floor(Math.random() * 10)}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

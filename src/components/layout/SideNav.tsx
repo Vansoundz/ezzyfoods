@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 import { NavLink, useParams, useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { RootReducer } from "../../store/reducers/root";
 import { motion } from "framer-motion";
 
 interface IProps {

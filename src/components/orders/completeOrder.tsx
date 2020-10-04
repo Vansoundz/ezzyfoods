@@ -1,6 +1,4 @@
 import React, { FC, FormEvent, useEffect, useState } from "react";
-// import { placeOrder } from "../../store/actions/orders";
-import { clearOrder } from "../../store/actions/product";
 import { useDispatch } from "react-redux";
 import { ProductModel } from "../../models/product.model";
 import { OrderModel } from "../../models/order.model";
@@ -8,6 +6,7 @@ import { useMutation } from "react-query";
 import { placeOrder } from "../../data/order.data";
 import { toast } from "react-toastify";
 import Loading from "../layout/Loading";
+import { CLEAR_ORDER } from "../../store/actions/types";
 
 interface IProps {
   order: ProductModel[];
@@ -37,7 +36,9 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
         name: "",
         phone: "",
       });
-      dispatch(clearOrder());
+      dispatch({
+        type: CLEAR_ORDER,
+      });
     }
   }, [data, dispatch]);
 

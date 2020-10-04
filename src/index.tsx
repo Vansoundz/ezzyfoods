@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import rootReducer from "./store/reducers/root";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-// import firebase from "./firebase/init";
 import Loading from "./components/layout/Loading";
 import "react-toastify/dist/ReactToastify.css";
 import { getUser } from "./data/auth.data";

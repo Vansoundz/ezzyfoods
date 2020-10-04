@@ -57,7 +57,14 @@ const List = () => {
         <h6>No orders currently</h6>
       ) : (
         <div>
-          <h2>Orders</h2>
+          <div
+            style={{
+              fontSize: `24px`,
+              fontWeight: 200,
+            }}
+          >
+            Orders
+          </div>
           {classified.length > 0 && (
             <div>
               {classified.map((orders, i) => {

@@ -8,18 +8,81 @@ import { toast } from "react-toastify";
 
 const Products = () => {
   const [products, setProducts] = useState<ProductModel[]>([]);
-
   const { data, isLoading, refetch } = useQuery("get products", getProducts);
   const [deleteProd, { data: deleted, isLoading: deleteLoading }] = useMutation(
     deleteProduct
   );
+
+  const [sortIndexes, setSortIndexes] = useState({
+    name: {
+      asc: false,
+      current: false,
+      value: "name",
+    },
+    price: {
+      asc: false,
+      current: false,
+      value: "price",
+    },
+    quantity: {
+      asc: false,
+      current: false,
+      value: "quantity",
+    },
+    category: {
+      asc: false,
+      current: false,
+      value: "[name]",
+    },
+  });
+
+  const sortProductBy = (criteria: string) => {
+    console.log(products);
+    let prods = products.sort((a, b) => {
+      // @ts-ignore
+      let first = a[sortIndexes[criteria].value];
+      // @ts-ignore
+      let second = b[sortIndexes[criteria].value];
+
+      console.log(first, second);
+      // @ts-ignore
+      if (sortIndexes[criteria].asc) {
+        if (
+          typeof first && typeof second === "number"
+            ? first > second
+            : first?.toLowerCase()?.localeCompare(second?.toLowerCase())
+        )
+          return 1;
+        return -1;
+      } else {
+        // @ts-ignore
+        if (
+          typeof first && typeof second === "number"
+            ? second > first
+            : second?.toLowerCase()?.localeCompare(first?.toLowerCase())
+        )
+          return 1;
+        return -1;
+      }
+    });
+
+    setSortIndexes({
+      ...sortIndexes,
+      [criteria]: {
+        // @ts-ignore
+        asc: !sortIndexes[criteria].asc,
+      },
+    });
+
+    return prods;
+  };
 
   useEffect(() => {
     if (deleted?.product) {
       toast("Product deleted successfully", { type: "info" });
       refetch();
     }
-  }, [deleted]);
+  }, [deleted, refetch]);
 
   useEffect(() => {
     if (data?.products) {
@@ -33,10 +96,34 @@ const Products = () => {
       <h4>All products</h4>
       <>
         <div className="d-product" id="dphead">
-          <span>Name</span>
-          <span>Price</span>
-          <span>Quantity</span>
-          <span>Category</span>
+          <span
+            onClick={() => {
+              setProducts(sortProductBy("name"));
+            }}
+          >
+            Name
+          </span>
+          <span
+            onClick={() => {
+              setProducts(sortProductBy("price"));
+            }}
+          >
+            Price
+          </span>
+          <span
+            onClick={() => {
+              setProducts(sortProductBy("quantity"));
+            }}
+          >
+            Quantity
+          </span>
+          <span
+            onClick={() => {
+              setProducts(sortProductBy("category"));
+            }}
+          >
+            Category
+          </span>
           <span>Edit</span>
           <span>Delete</span>
         </div>

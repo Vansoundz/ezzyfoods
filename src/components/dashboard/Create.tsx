@@ -1,6 +1,4 @@
 import React, { useState, FormEvent, useEffect } from "react";
-// import { useSelector } from "react-redux";
-// import { RootReducer } from "../../store/reducers/root";
 import { ProductModel } from "../../models/product.model";
 import { useMutation, useQuery } from "react-query";
 import {

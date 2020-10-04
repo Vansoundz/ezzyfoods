@@ -6,7 +6,7 @@ import { RootReducer } from "../../store/reducers/root";
 
 const DashLayout: FC = ({ children }) => {
   const pathname = useLocation().pathname.slice(1);
-  const routes = ["create", "products", "orders", "stats"];
+  const routes = ["create", "products", "orders", "dashboard"];
   const dispatch = useDispatch();
   const { name } = useSelector((state: RootReducer) => ({
     name: state.auth.user.name,

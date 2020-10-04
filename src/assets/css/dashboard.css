@@ -90,3 +90,28 @@ select#category {
   border-radius: 4px;
   background: #d1d6ee;
 }
+
+.overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.stat {
+  width: 90%;
+  height: 200px;
+  background: linear-gradient(135deg, #f53f3f, #f1c40f);
+  border-radius: 4px;
+  box-shadow: 0 0 6px #ddd;
+  padding: 8px;
+}
+
+.stat > div:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 68%;
+}
+
+.stat * {
+  color: #fff;
+}

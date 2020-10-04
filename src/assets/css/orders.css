@@ -61,13 +61,13 @@ a.btn.orange {
 }
 
 .order-item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
 .dash-orders {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
   grid-gap: 16px;
 }
 
@@ -81,7 +81,6 @@ a.btn.orange {
 .order-actions {
   display: flex;
   justify-content: space-between;
-
   margin: 8px 0;
 }
 

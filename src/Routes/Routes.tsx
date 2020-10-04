@@ -13,21 +13,8 @@ import List from "../components/dashboard/DOList";
 import Create from "../components/dashboard/Create";
 import Summary from "../components/dashboard/Summary";
 import Register from "../components/auth/Register";
-// import { useQuery } from "react-query";
-// import { getCategories } from "../data/product.data";
 
 const Routes = () => {
-  // const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
-  //   []
-  // );
-  // const { data } = useQuery("get categories", getCategories);
-
-  // useEffect(() => {
-  //   if (data?.categories) {
-  //     setCategories(data.categories);
-  //   }
-  // }, [data]);
-
   const l = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);

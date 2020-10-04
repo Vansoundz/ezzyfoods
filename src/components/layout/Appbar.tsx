@@ -1,15 +1,12 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../store/actions/auth";
+import { useSelector } from "react-redux";
 import { RootReducer } from "../../store/reducers/root";
 
 const Appbar = () => {
-  const { isAuthenticated, order } = useSelector((state: RootReducer) => ({
+  const { order } = useSelector((state: RootReducer) => ({
     order: state.product.order,
-    isAuthenticated: state.auth.isAuthenticated,
   }));
-  const dispatch = useDispatch();
 
   const [appName] = useState("EzzyFoods");
 
@@ -26,19 +23,12 @@ const Appbar = () => {
         <ul className="right">
           <li>
             <Link to="/order" style={{ position: "relative" }}>
-              <i className="material-icons">shopping_cart</i>
+              <i className="material-icons" style={{ color: "#fff" }}>
+                shopping_cart
+              </i>
               {badge}
             </Link>
           </li>
-          {isAuthenticated && (
-            <Fragment>
-              <li>
-                <i onClick={() => dispatch(logout)} className="material-icons">
-                  logout
-                </i>
-              </li>
-            </Fragment>
-          )}
         </ul>
       </div>
     </nav>

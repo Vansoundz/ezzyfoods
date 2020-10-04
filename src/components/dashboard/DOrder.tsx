@@ -43,9 +43,12 @@ const Order: FC<IProps> = ({ order, refetch }) => {
             <h4>{name}</h4>
             <div>{phone}</div>
           </div>
-          <div>
-            <span>{total}</span>
-          </div>
+        </div>
+        <div className="order-item">
+          <span style={{ fontWeight: "bold" }}>Name</span>
+          <span style={{ fontWeight: "bold" }}>Price</span>
+          <span style={{ fontWeight: "bold" }}>Quantity</span>
+          <span style={{ fontWeight: "bold" }}>Amount</span>
         </div>
         <div className="orders-body">
           <ul className="">
@@ -54,15 +57,21 @@ const Order: FC<IProps> = ({ order, refetch }) => {
                 return (
                   <li key={product._id} className="order-item">
                     <span>{product.name}</span>
+                    <span>{product.price}</span>
                     {/**@ts-ignore */}
                     <span>{quantities[product?._id]}</span>
+
+                    {/**@ts-ignore */}
+                    <span>{quantities[product?._id] * product.price}</span>
                   </li>
                 );
               })}
 
             <li className="order-item">
-              <span>Total: </span>
-              <span>{total}</span>
+              <span style={{ gridColumn: "1 / 4", fontWeight: "bold" }}>
+                Total:{" "}
+              </span>
+              <span style={{ fontWeight: "bold" }}>{total}</span>
             </li>
           </ul>
         </div>
