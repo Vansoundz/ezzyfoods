@@ -11,7 +11,6 @@ import Edit from "../components/dashboard/Edit";
 import DashLayout from "../components/layout/DashLayout";
 import List from "../components/dashboard/DOList";
 import Create from "../components/dashboard/Create";
-import Summary from "../components/dashboard/Summary";
 import Register from "../components/auth/Register";
 
 const Routes = () => {
