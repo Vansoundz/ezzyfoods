@@ -12,6 +12,7 @@ interface IProps {
 
 const SideNav: FC<IProps> = ({ open, setOpen, categories }) => {
   const { category } = useParams<{ category: string }>();
+
   const l = useLocation();
 
   return (
@@ -42,17 +43,17 @@ const SideNav: FC<IProps> = ({ open, setOpen, categories }) => {
           </NavLink>
         </li>
         {categories &&
-          categories.map(({ name, _id }, i) => {
+          categories.map(({ name, _id }) => {
             return (
               <li
-                key={i}
-                className={category === _id ? "active" : ""}
+                key={_id}
+                className={category === name ? "active" : ""}
                 onClick={() => setOpen(!open)}
               >
                 <NavLink
                   style={{ textTransform: "capitalize" }}
                   className="sidenav-close"
-                  to={`/products/${_id}`}
+                  to={`/products/${name}`}
                 >
                   {name}
                   {/* {name.charAt(0).toUpperCase() + name.slice(1)} */}

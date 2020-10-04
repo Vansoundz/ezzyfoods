@@ -4,12 +4,22 @@ import { useMutation, useQuery } from "react-query";
 import { getProducts, deleteProduct } from "../../data/product.data";
 import { ProductModel } from "../../models/product.model";
 import Loading from "../layout/Loading";
+import { toast } from "react-toastify";
 
 const Products = () => {
   const [products, setProducts] = useState<ProductModel[]>([]);
 
-  const { data, isLoading } = useQuery("get products", getProducts);
-  const [deleteProd] = useMutation(deleteProduct);
+  const { data, isLoading, refetch } = useQuery("get products", getProducts);
+  const [deleteProd, { data: deleted, isLoading: deleteLoading }] = useMutation(
+    deleteProduct
+  );
+
+  useEffect(() => {
+    if (deleted?.product) {
+      toast("Product deleted successfully", { type: "info" });
+      refetch();
+    }
+  }, [deleted]);
 
   useEffect(() => {
     if (data?.products) {
@@ -19,7 +29,7 @@ const Products = () => {
 
   return (
     <div className="d-products">
-      {isLoading && <Loading />}
+      {(isLoading || deleteLoading) && <Loading />}
       <h4>All products</h4>
       <>
         <div className="d-product" id="dphead">

@@ -90,3 +90,14 @@ button,
   width: 300px;
   margin: auto;
 }
+
+/* Toast */
+.Toastify__toast-body {
+  color: #fff;
+}
+
+.Toast svg,
+path {
+  color: #fff;
+  fill: #fff;
+}

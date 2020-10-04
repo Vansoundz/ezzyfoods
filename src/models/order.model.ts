@@ -10,5 +10,5 @@ export interface OrderModel {
   quantities?: any | {};
   products?: ProductModel[];
   total?: number;
-  time?: number;
+  date?: number;
 }

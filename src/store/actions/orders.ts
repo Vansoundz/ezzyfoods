@@ -41,7 +41,7 @@ export const loadOrders = () => (dispatch: Dispatch) => {
 export const placeOrder = async (order: OrderModel) => {
   const { firestore } = firebase;
   // order.id = uuid()
-  order.time = Date.now();
+  // order.time = Date.now();
   await firestore().collection("orders").add(order);
   return;
 };

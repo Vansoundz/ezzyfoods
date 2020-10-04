@@ -18,7 +18,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes />
-      <ToastContainer position="top-right" hideProgressBar={true} />
+      <ToastContainer
+        position="top-right"
+        hideProgressBar={true}
+        autoClose={1000}
+      />
     </BrowserRouter>
   );
 };
