@@ -111,3 +111,102 @@ path {
   color: #fff;
   fill: #fff;
 }
+
+/* landing */
+/* .l-nav-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+} */
+
+.l-nav {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 0px 6px #ddd;
+  padding: 16px;
+  background: #fff;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1 1 320px;
+}
+
+.l-nav #logo {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.l-nav ul {
+  display: flex;
+}
+
+.l-nav ul li {
+  margin-right: 16px;
+}
+
+.l-nav ul li a {
+  text-transform: capitalize;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 90%;
+  margin: auto;
+  min-height: 300px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 40px;
+}
+
+.header > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 90%;
+}
+
+.gotoshop {
+  cursor: pointer;
+  margin-top: 16px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 8px;
+  background: #ffc988;
+}
+
+.othersselling {
+  display: flex;
+  background: #29eae4;
+  padding: 5%;
+  min-height: 320px;
+}
+
+.othersselling > * {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sellwithus {
+  cursor: pointer;
+  margin-top: 16px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 8px;
+  background: #ffc988;
+}
+.responsive {
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 320px) {
+  .l-nav {
+    justify-content: space-around;
+  }
+
+  .l-nav ul {
+    margin-top: 6px;
+  }
+}

@@ -12,6 +12,7 @@ import DashLayout from "../components/layout/DashLayout";
 import List from "../components/dashboard/DOList";
 import Create from "../components/dashboard/Create";
 import Register from "../components/auth/Register";
+import Landing from "../components/layout/Landing";
 
 const Routes = () => {
   const l = useLocation();
@@ -21,7 +22,8 @@ const Routes = () => {
 
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact component={Landing} />
+      <Route path="/shop" exact component={Home} />
       <Route path="/order" component={OList} />
       <Route path="/products/:category" component={Product} />
       {/* {categories &&

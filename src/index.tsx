@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import App from "./App";
+import "./style.css";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import rootReducer from "./store/reducers/root";
@@ -10,6 +11,7 @@ import Loading from "./components/layout/Loading";
 import "react-toastify/dist/ReactToastify.css";
 import { getUser } from "./data/auth.data";
 import { LOGIN } from "./store/actions/types";
+import { BrowserRouter } from "react-router-dom";
 
 export const store = createStore(
   rootReducer,
@@ -43,9 +45,11 @@ const authState = async () => {
     });
   }
   render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>,
     document.getElementById("root")
   );
 };
