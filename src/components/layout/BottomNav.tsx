@@ -11,7 +11,7 @@ const BottomNav = () => {
   // const dispatch = useDispatch();
   const { isAuthenticated, isAdmin } = useSelector((state: RootReducer) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    isAdmin: state.auth.user.isAdmin,
+    isAdmin: state.auth.user?.isAdmin,
   }));
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
