@@ -33,10 +33,10 @@ const SideNav: FC<IProps> = ({ open, setOpen, categories }) => {
     >
       <span>
         <li
-          className={l.pathname === "/" ? "active" : ""}
+          className={l.pathname === "/shop" ? "active" : ""}
           onClick={() => setOpen(!open)}
         >
-          <NavLink className="sidenav-close" exact to="/">
+          <NavLink className="sidenav-close" exact to="/shop">
             All
           </NavLink>
         </li>

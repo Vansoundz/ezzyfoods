@@ -1,8 +1,11 @@
 import React from "react";
 import { Line } from "react-chartjs-3";
+import { useQuery } from "react-query";
+import { getStats } from "../../data/order.data";
+import Loading from "../layout/Loading";
 import Stats from "./Summary";
 
-const data = {
+const Data = {
   labels: [
     "28th Sep",
     "29th Sep",
@@ -38,53 +41,61 @@ const data = {
 };
 
 const Dashboard = () => {
+  const { data, error, isLoading } = useQuery(["get stats"], getStats);
+  console.log(data);
   return (
-    <div
-      className="dashboard"
-      style={{
-        marginBottom: "40px",
-      }}
-    >
-      <div
-        style={{
-          width: "700px",
-          margin: "auto",
-          paddingTop: "24px",
-          marginBottom: "40px",
-        }}
-      >
+    <>
+      {isLoading && <Loading />}
+      {error && <h3>Error</h3>}
+      {data && (
         <div
+          className="dashboard"
           style={{
-            fontSize: "24px",
-            fontWeight: 200,
-            marginBottom: "16px",
+            marginBottom: "40px",
           }}
         >
-          Dashboard
+          <div
+            style={{
+              width: "700px",
+              margin: "auto",
+              paddingTop: "24px",
+              marginBottom: "40px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "24px",
+                fontWeight: 200,
+                marginBottom: "16px",
+              }}
+            >
+              Dashboard
+            </div>
+            <Stats stats={data} />
+          </div>
+          <div
+            className="chart"
+            style={{
+              width: "700px",
+              height: "400px",
+              margin: "auto",
+              paddingTop: "24px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "24px",
+                fontWeight: 200,
+                marginBottom: "16px",
+              }}
+            >
+              Sales Overview
+            </div>
+            <Line data={Data} />
+          </div>
         </div>
-        <Stats />
-      </div>
-      <div
-        className="chart"
-        style={{
-          width: "700px",
-          height: "400px",
-          margin: "auto",
-          paddingTop: "24px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "24px",
-            fontWeight: 200,
-            marginBottom: "16px",
-          }}
-        >
-          Sales Overview
-        </div>
-        <Line data={data} />
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -27,6 +27,16 @@ export default {
   getOrders() {
     return Axios.get(`${api}/orders`, setAuthHeader());
   },
+  getFailedOrders() {
+    return Axios.get(`${api}/orders/failed`, setAuthHeader());
+  },
+  getDeliveredOrders() {
+    return Axios.get(`${api}/orders/delivered`, setAuthHeader());
+  },
+  getStats() {
+    return Axios.get(`${api}/orders/stats`, setAuthHeader());
+  },
+
   delete(id: string) {
     return Axios.delete(`${api}/orders/${id}`, setAuthHeader());
   },

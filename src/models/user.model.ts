@@ -7,4 +7,5 @@ export interface UserModel {
   name?: string;
   phone?: string;
   products?: ProductModel[];
+  isAdmin?: boolean;
 }

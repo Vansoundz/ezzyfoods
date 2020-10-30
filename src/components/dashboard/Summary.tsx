@@ -1,25 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { getOrders } from "../../data/order.data";
-import { OrderModel } from "../../models/order.model";
-import Loading from "../layout/Loading";
+import React, { FC } from "react";
+import { IStats } from "../../models/order.model";
 
-const Summary = () => {
-  const [orders, setOrders] = useState<OrderModel[]>([]);
-  const { data, isLoading } = useQuery("Get orders", getOrders);
-
-  useEffect(() => {
-    if (data?.orders) {
-      setOrders(
-        // @ts-ignore
-        data.orders
-      );
-    }
-  }, [data]);
-
+const Summary: FC<{ stats: IStats }> = ({ stats }) => {
   return (
     <div className="overview">
-      {isLoading && <Loading />}
       <div
         style={{
           background: "linear-gradient(135deg, #3498db, #97d6ff)",
@@ -38,7 +22,7 @@ const Summary = () => {
           <div>Orders</div>
         </div>
         <div>
-          <div style={{ fontSize: "24px" }}>{orders.length}</div>
+          <div style={{ fontSize: "24px" }}>{stats.total}</div>
         </div>
       </div>
       <div
@@ -59,9 +43,7 @@ const Summary = () => {
           <div>Orders</div>
         </div>
         <div>
-          <div style={{ fontSize: "24px" }}>
-            {Math.floor(Math.random() * 10)}
-          </div>
+          <div style={{ fontSize: "24px" }}>{stats.pending}</div>
         </div>
       </div>
       <div
@@ -82,9 +64,7 @@ const Summary = () => {
           <div>Deliveries</div>
         </div>
         <div>
-          <div style={{ fontSize: "24px" }}>
-            {Math.floor(Math.random() * 5)}
-          </div>
+          <div style={{ fontSize: "24px" }}>{stats.delivered}</div>
         </div>
       </div>
       <div
@@ -105,9 +85,7 @@ const Summary = () => {
           <div>Deliveries</div>
         </div>
         <div>
-          <div style={{ fontSize: "24px" }}>
-            {Math.floor(Math.random() * 10)}
-          </div>
+          <div style={{ fontSize: "24px" }}>{stats.failed}</div>
         </div>
       </div>
     </div>

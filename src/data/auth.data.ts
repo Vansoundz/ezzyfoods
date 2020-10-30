@@ -17,7 +17,10 @@ const login = async ({
     const resp = (await userApi.login({ email, password })).data;
     return resp;
   } catch (error) {
-    return error.response.data;
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 

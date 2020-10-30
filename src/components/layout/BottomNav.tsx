@@ -9,8 +9,9 @@ import { getCategories } from "../../data/product.data";
 
 const BottomNav = () => {
   // const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state: RootReducer) => ({
+  const { isAuthenticated, isAdmin } = useSelector((state: RootReducer) => ({
     isAuthenticated: state.auth.isAuthenticated,
+    isAdmin: state.auth.user.isAdmin,
   }));
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
@@ -48,14 +49,14 @@ const BottomNav = () => {
       </AnimatePresence>
 
       <div className="bottom orange">
-        {isAuthenticated && (
+        {isAuthenticated && isAdmin && (
           <Fragment>
             <NavLink to="/dashboard">
               <i className="material-icons">dashboard</i>
             </NavLink>
           </Fragment>
         )}
-        <NavLink to="/" exact>
+        <NavLink to="/shop" exact>
           <i className="material-icons">home</i>
         </NavLink>
         <span onClick={() => setOpen(!open)}>

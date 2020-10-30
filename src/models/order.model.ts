@@ -12,3 +12,10 @@ export interface OrderModel {
   total?: number;
   date?: number;
 }
+
+export interface IStats {
+  delivered: number;
+  failed: number;
+  pending: number;
+  total: number;
+}

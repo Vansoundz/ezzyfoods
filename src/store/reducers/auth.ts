@@ -1,3 +1,4 @@
+import { User } from "firebase";
 import {
   USER_LOADED,
   AUTH_ERROR,
@@ -7,8 +8,14 @@ import {
 } from "../actions/types";
 import { authAction } from "../actions/types.actions";
 
-const initState = {
-  user: null,
+interface IAState {
+  user?: User;
+  isAuthenticated: boolean;
+  loading: boolean;
+}
+
+const initState: IAState = {
+  user: undefined,
   isAuthenticated: false,
   loading: false,
 };

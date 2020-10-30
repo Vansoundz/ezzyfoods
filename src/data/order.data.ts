@@ -1,5 +1,5 @@
 import orderApi from "../api/order.api";
-import { OrderModel } from "../models/order.model";
+import { IStats, OrderModel } from "../models/order.model";
 
 const placeOrder = async ({ order }: { order: OrderModel }) => {
   try {
@@ -7,21 +7,57 @@ const placeOrder = async ({ order }: { order: OrderModel }) => {
     return resp;
   } catch (error) {
     if (error.response) {
-      return error.response.data;
+      throw new Error(error.response.data.errors);
     }
-    return "Error";
+    throw new Error("Error");
   }
 };
 
-const getOrders = async () => {
+const getOrders = async (): Promise<{ orders: OrderModel[] }> => {
   try {
     let resp = (await orderApi.getOrders()).data;
     return resp;
   } catch (error) {
     if (error.response) {
-      return error.response.data;
+      throw new Error(error.response.data.errors);
     }
-    return "Error";
+    throw new Error("Error");
+  }
+};
+
+const getDeliveredOrders = async (): Promise<{ orders: OrderModel[] }> => {
+  try {
+    let resp = (await orderApi.getDeliveredOrders()).data;
+    return resp;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
+  }
+};
+
+const getFailedOrders = async (): Promise<{ orders: OrderModel[] }> => {
+  try {
+    let resp = (await orderApi.getFailedOrders()).data;
+    return resp;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
+  }
+};
+
+const getStats = async (): Promise<IStats> => {
+  try {
+    let resp = (await orderApi.getStats()).data;
+    return resp.stats;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
@@ -31,10 +67,17 @@ const deleteOrder = async ({ id }: { id: string }) => {
     return resp;
   } catch (error) {
     if (error.response) {
-      return error.response.data;
+      throw new Error(error.response.data.errors);
     }
-    return "Error";
+    throw new Error("Error");
   }
 };
 
-export { getOrders, placeOrder, deleteOrder };
+export {
+  getOrders,
+  placeOrder,
+  deleteOrder,
+  getDeliveredOrders,
+  getFailedOrders,
+  getStats,
+};

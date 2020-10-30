@@ -6,8 +6,10 @@ const getProducts = async () => {
     const data = (await productApi.getProducts()).data;
     return data;
   } catch (error) {
-    if (error.response) return error.response.data;
-    return "Error";
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
@@ -16,8 +18,10 @@ const getProductsByCategory = async (key: string, category: string) => {
     const data = (await productApi.getProductsByCat(category)).data;
     return data;
   } catch (error) {
-    if (error.response) return error.response.data;
-    return "Error";
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
@@ -31,8 +35,10 @@ const createProduct = async ({ product }: { product: ProductModel }) => {
     let resp = (await productApi.createProduct(product)).data;
     return resp;
   } catch (error) {
-    if (error.response) return error.response.data;
-    return "Error";
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
@@ -46,8 +52,10 @@ const createCategory = async ({ name }: { name: string }) => {
     let resp = (await productApi.createCategory(name)).data;
     return resp;
   } catch (error) {
-    if (error.response) return error.response.data;
-    return "Error";
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
@@ -66,8 +74,10 @@ const updateProduct = async ({ product }: { product: ProductModel }) => {
     let resp = (await productApi.updateProduct(product)).data;
     return resp;
   } catch (error) {
-    if (error.response) return error.response.data;
-    return "Error";
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
   }
 };
 
