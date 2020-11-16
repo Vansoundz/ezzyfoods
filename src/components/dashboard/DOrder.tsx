@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { OrderModel } from "../../models/order.model";
 import { toast } from "react-toastify";
 import { useMutation } from "react-query";
-import { deleteOrder } from "../../data/order.data";
+import { markDelivered, markFailed } from "../../data/order.data";
+import Loading from "../layout/Loading";
 
 interface IProps {
   order: OrderModel;
@@ -19,7 +20,8 @@ const Order: FC<IProps> = ({ order, refetch }) => {
     quantities,
   } = order;
 
-  const [deleteProd] = useMutation(deleteOrder);
+  const [deliver, { isLoading }] = useMutation(markDelivered);
+  const [failed, { isLoading: loading }] = useMutation(markFailed);
 
   useEffect(() => {
     let t = 0;
@@ -37,6 +39,7 @@ const Order: FC<IProps> = ({ order, refetch }) => {
 
   return (
     <>
+      {(isLoading || loading) && <Loading />}
       <div>
         <div className="orders-header">
           <div>
@@ -79,7 +82,7 @@ const Order: FC<IProps> = ({ order, refetch }) => {
       <div className="order-actions">
         <button
           onClick={async () => {
-            await deleteProd({ id: _id! });
+            await failed({ id: _id! });
             refetch();
             toast("Order not delivered", {
               type: "error",
@@ -92,7 +95,7 @@ const Order: FC<IProps> = ({ order, refetch }) => {
         </button>
         <button
           onClick={async () => {
-            await deleteProd({ id: _id! });
+            await deliver({ id: _id! });
             refetch();
             toast("Order delivered successfully", {
               type: "success",

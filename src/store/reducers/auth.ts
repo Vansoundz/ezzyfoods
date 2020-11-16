@@ -1,4 +1,4 @@
-import { User } from "firebase";
+import { UserModel } from "../../models/user.model";
 import {
   USER_LOADED,
   AUTH_ERROR,
@@ -9,7 +9,7 @@ import {
 import { authAction } from "../actions/types.actions";
 
 interface IAState {
-  user?: User;
+  user?: UserModel;
   isAuthenticated: boolean;
   loading: boolean;
 }

@@ -36,6 +36,12 @@ export default {
   getStats() {
     return Axios.get(`${api}/orders/stats`, setAuthHeader());
   },
+  markDelivered(id: string) {
+    return Axios.patch(`${api}/orders/${id}/delivered`, {}, setAuthHeader());
+  },
+  markFailed(id: string) {
+    return Axios.patch(`${api}/orders/${id}/failed`, {}, setAuthHeader());
+  },
 
   delete(id: string) {
     return Axios.delete(`${api}/orders/${id}`, setAuthHeader());

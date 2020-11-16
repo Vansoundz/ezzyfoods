@@ -73,6 +73,30 @@ const deleteOrder = async ({ id }: { id: string }) => {
   }
 };
 
+const markDelivered = async ({ id }: { id: string }) => {
+  try {
+    let resp = (await orderApi.markDelivered(id)).data;
+    return resp;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
+  }
+};
+
+const markFailed = async ({ id }: { id: string }) => {
+  try {
+    let resp = (await orderApi.markFailed(id)).data;
+    return resp;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.errors);
+    }
+    throw new Error("Error");
+  }
+};
+
 export {
   getOrders,
   placeOrder,
@@ -80,4 +104,6 @@ export {
   getDeliveredOrders,
   getFailedOrders,
   getStats,
+  markDelivered,
+  markFailed,
 };
