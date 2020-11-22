@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { getUser } from "./data/auth.data";
 import { LOGIN } from "./store/actions/types";
 import { BrowserRouter } from "react-router-dom";
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import "@glidejs/glide/dist/css/glide.theme.min.css";
 
 export const store = createStore(
   rootReducer,

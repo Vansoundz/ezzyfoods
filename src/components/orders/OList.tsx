@@ -41,7 +41,7 @@ const OList = () => {
         ) : (
           <div className="center">
             <p>You have no order, make one ; {")"}</p>
-            <Link className="btn orange" to="/">
+            <Link className="btn orange" to="/shop">
               Explore
             </Link>
           </div>

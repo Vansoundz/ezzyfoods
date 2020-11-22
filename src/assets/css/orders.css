@@ -17,7 +17,8 @@
   display: grid;
 }
 
-input {
+input,
+select {
   padding: 8px;
   margin-top: 4px;
   border-radius: 4px;
@@ -25,8 +26,13 @@ input {
   border: 1px solid #ddd;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border: 1px solid #ffb838;
+}
+
+select {
+  background: #fff;
 }
 
 input[type="submit"] {

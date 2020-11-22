@@ -1,8 +1,30 @@
-.img,
-img {
+.card .img,
+.card img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+}
+
+.slide-card img {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+}
+
+.show-slides {
+  margin: auto;
+  padding: 5em 32px;
+  background: #fecc7b;
+  position: relative;
+}
+
+.controls {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 1;
+  margin-top: 120px;
 }
 
 .pcard {

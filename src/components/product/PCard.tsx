@@ -34,7 +34,7 @@ const PCard: FC<IProps> = ({ product }) => {
             <h6>
               <small>Ksh {price}</small>
             </h6>
-            <button>View</button>
+            {/* <button>View</button> */}
           </div>
           <div>
             <button

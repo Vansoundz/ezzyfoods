@@ -15,12 +15,16 @@ interface IProps {
 
 const CompleteOrder: FC<IProps> = ({ order, total }) => {
   const [submitted, submit] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: "";
+    phone: "";
+    location?: "gate a" | "gate b" | "gate c" | "gachororo" | "oasis" | "jkuat";
+  }>({
     name: "",
     phone: "",
   });
   const dispatch = useDispatch();
-  const [makeOrder, { data, isLoading }] = useMutation(placeOrder);
+  const [makeOrder, { data, isLoading, error }] = useMutation(placeOrder);
 
   useEffect(() => {
     if (data?.errors) {
@@ -42,6 +46,12 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
     }
   }, [data, dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast(`Error: ${error}`, { type: `warning` });
+    }
+  }, [error]);
+
   const onChange = (e: FormEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -52,12 +62,14 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const { name, phone } = formData;
+    const { name, phone, location } = formData;
 
     if (!name.trim()) {
       toast("Name is required", { type: "error" });
     } else if (phone.length < 10) {
       toast("Phone is required", { type: "error" });
+    } else if (!location?.trim()) {
+      toast("Location is required", { type: "error" });
     } else {
       const newOrder: OrderModel = {
         customer: formData,
@@ -68,6 +80,15 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
       await makeOrder({ order: newOrder });
     }
   };
+
+  const locations = [
+    "gate a",
+    "gate b",
+    "gate c",
+    "gachororo",
+    "oasis",
+    "jkuat",
+  ];
 
   return (
     <div className="corder">
@@ -88,6 +109,28 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
             <div className="input-field">
               <label htmlFor="phone"> Enter Phone number</label>
               <input type="tel" required onChange={onChange} id="phone" />
+            </div>
+            <div className="input-field">
+              <label htmlFor="phone"> Select you location</label>
+              <select
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    // @ts-ignore
+                    location: e.currentTarget.value,
+                  });
+                }}
+              >
+                {locations.map((location, i) => (
+                  <option
+                    key={i}
+                    style={{ textTransform: "capitalize" }}
+                    value={location}
+                  >
+                    {location}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="input-field">
               <input

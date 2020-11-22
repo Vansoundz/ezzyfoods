@@ -6,10 +6,12 @@ export interface OrderModel {
   customer?: {
     name: string;
     phone: string;
+    location?: "gate a" | "gate b" | "gate c" | "gachororo" | "oasis" | "jkuat";
   };
   quantities?: any | {};
   products?: ProductModel[];
   total?: number;
+
   date?: number;
 }
 

@@ -6,7 +6,7 @@ export interface ProductModel {
   store?: number | string;
   q?: number;
   category?: string | { name: string; _id: string };
-  imgage?: string;
+  image?: string;
   images?: string[];
   file?: File;
   quantity?: number;
