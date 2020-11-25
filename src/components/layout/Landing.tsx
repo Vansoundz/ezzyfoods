@@ -172,7 +172,7 @@ const Landing = () => {
               Phone: <a href="tel:+254726718344">+254726718344</a>
             </div>
             <div>
-              Email: <a href="mailto:email@us.domain">email@us.domain</a>
+              Email: <a href="mailto:ezzyfoods@gmail.com">ezzyfoods@gmail.com</a>
             </div>
           </div>
         </div>
