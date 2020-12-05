@@ -45,6 +45,9 @@ const Order: FC<IProps> = ({ order, refetch }) => {
           <div>
             <h4>{order.customer?.name}</h4>
             <div>{order.customer?.phone}</div>
+            <div style={{ textTransform: "capitalize" }}>
+              {order.customer?.location}
+            </div>
           </div>
         </div>
         <div className="order-item">
