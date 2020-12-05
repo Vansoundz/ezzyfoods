@@ -13,8 +13,8 @@ interface IProps {
 const Order: FC<IProps> = ({ order, refetch }) => {
   const [total, setTotal] = useState(0);
   const {
-    // @ts-ignore
-    customer: { name, phone },
+    // // @ts-ignore
+    // customer: { name, phone },
     products,
     _id,
     quantities,
@@ -43,8 +43,8 @@ const Order: FC<IProps> = ({ order, refetch }) => {
       <div>
         <div className="orders-header">
           <div>
-            <h4>{name}</h4>
-            <div>{phone}</div>
+            <h4>{order.customer?.name}</h4>
+            <div>{order.customer?.phone}</div>
           </div>
         </div>
         <div className="order-item">

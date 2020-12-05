@@ -21,11 +21,13 @@ const classifyArray = (arr: OrderModel[]) => {
   let criteria = "";
   let start = 0;
   let end = 0;
+  // console.log(arr);
 
   arr = [...arr, {}];
 
   arr.forEach((order) => {
     let localCriteria = moment(order.date).format("LL");
+
     if (start === end) {
       criteria = localCriteria;
     }
@@ -37,6 +39,12 @@ const classifyArray = (arr: OrderModel[]) => {
     }
     end++;
   });
+
+  if (!classified.length && arr.length > 0) {
+    classified = [[...arr]];
+  }
+
+  // console.log("class", classified);
 
   return classified;
 };
@@ -50,6 +58,7 @@ const List = () => {
     "Get orders",
     getOrders
   );
+  console.log(pendingOrders);
   const {
     data: delivered,
     isLoading: isLoadingDel,
@@ -64,6 +73,7 @@ const List = () => {
 
   useEffect(() => {
     if (pending?.orders) {
+      // console.log(pending);
       setPendingOrders(
         classifyArray(
           pending.orders.sort((a, b) => moment(b.date).diff(moment(a.date)))
@@ -143,7 +153,9 @@ const List = () => {
                           </h3>
                           <ul className="dash-orders">
                             {orders &&
+                              orders.length > 0 &&
                               orders.map((order) => {
+                                console.log(order);
                                 return (
                                   <li key={order._id} className="dash-order">
                                     <DOrder
@@ -175,6 +187,7 @@ const List = () => {
                           </h3>
                           <ul className="dash-orders">
                             {orders &&
+                              orders.length > 0 &&
                               orders.map((order) => {
                                 return (
                                   <li key={order._id} className="dash-order">
@@ -207,6 +220,7 @@ const List = () => {
                           </h3>
                           <ul className="dash-orders">
                             {orders &&
+                              orders.length > 0 &&
                               orders.map((order) => {
                                 return (
                                   <li key={order._id} className="dash-order">
