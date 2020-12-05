@@ -58,7 +58,7 @@ const List = () => {
     "Get orders",
     getOrders
   );
-  console.log(pendingOrders);
+
   const {
     data: delivered,
     isLoading: isLoadingDel,
@@ -155,7 +155,6 @@ const List = () => {
                             {orders &&
                               orders.length > 0 &&
                               orders.map((order) => {
-                                console.log(order);
                                 return (
                                   <li key={order._id} className="dash-order">
                                     <DOrder
