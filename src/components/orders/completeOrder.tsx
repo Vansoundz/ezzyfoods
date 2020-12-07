@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import Loading from "../layout/Loading";
 import { CLEAR_ORDER } from "../../store/actions/types";
 import { Link } from "react-router-dom";
-import orders from "../../store/reducers/orders";
 
 interface IProps {
   order: ProductModel[];
