@@ -32,19 +32,12 @@ const OList = () => {
           <span> Add</span>
           <span> Remove</span>
         </div>
-        {orders.length > 0 ? (
+        {orders.length > 0 && (
           <>
             {orders.map((order, index) => {
               return <Order order={order} index={index} key={index} />;
             })}
           </>
-        ) : (
-          <div className="center">
-            <p>You have no order, make one ; {")"}</p>
-            <Link className="btn orange" to="/shop">
-              Explore
-            </Link>
-          </div>
         )}
         {total > 0 && (
           <div className="order">
@@ -55,7 +48,7 @@ const OList = () => {
             <span> </span>
           </div>
         )}
-        {orders.length > 0 && <CompleteOrder order={orders} total={total} />}
+        <CompleteOrder order={orders} total={total} />
       </div>
     </AppLayout>
   );

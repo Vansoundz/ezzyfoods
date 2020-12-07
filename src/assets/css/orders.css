@@ -144,6 +144,21 @@ a.btn.orange {
   animation: anim 0.2s linear 1 forwards;
 }
 
+.continue {
+  border-radius: 32px;
+  padding: 6px 16px;
+  /* border: 1px solid #ffb838; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 70%;
+  margin: 16px auto;
+}
+
+.continue > span {
+  color: #fff;
+}
+
 @keyframes anim {
   from {
     width: 2%;

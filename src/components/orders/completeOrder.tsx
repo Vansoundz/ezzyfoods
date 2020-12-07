@@ -7,6 +7,8 @@ import { placeOrder } from "../../data/order.data";
 import { toast } from "react-toastify";
 import Loading from "../layout/Loading";
 import { CLEAR_ORDER } from "../../store/actions/types";
+import { Link } from "react-router-dom";
+import orders from "../../store/reducers/orders";
 
 interface IProps {
   order: ProductModel[];
@@ -93,12 +95,36 @@ const CompleteOrder: FC<IProps> = ({ order, total }) => {
   return (
     <div className="corder">
       {isLoading && <Loading />}
-      {submitted ? (
-        <div>
-          <h4>Thank you, Your order was placed successfully</h4>
-          <i className="material-icons md-48 green-text">done_outline</i>
-        </div>
-      ) : (
+      {order.length === 0 && (
+        <>
+          {!submitted ? (
+            <div className="center">
+              <h4>You have no order, make one ; {")"}</h4>
+              <Link className="btn orange" to="/shop">
+                Explore
+              </Link>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center" }}>
+              <div>
+                <i
+                  style={{ fontSize: 48, color: "#4CAF50" }}
+                  className="material-icons md-48 green-text"
+                >
+                  check_circle
+                </i>
+              </div>
+              <h4>Thank you, Your order was placed successfully</h4>
+              <Link className="continue btn" to="/shop">
+                <span>Continue Shopping</span>
+                <i className="material-icons">arrow_forward</i>
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+
+      {order.length > 0 && (
         <div>
           <h5>Help us get to you</h5>
           <form id="mform" className="mform" onSubmit={onSubmit}>
