@@ -1,6 +1,6 @@
 # Ezzyfoodz
 
-A simple e-commerce site
+A simple e-commerce site build with react
 
 ## Installation and running
 
